@@ -1,0 +1,8 @@
+project:
+  type: website
+  output-dir: docs
+execute:
+  freeze: auto
+format: html
+website:
+  site-url: "https://smpdl.github.io/jsPsych-Dashboard/" 
