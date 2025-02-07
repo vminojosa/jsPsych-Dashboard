@@ -4,12 +4,11 @@ project:
 execute:
   freeze: auto
 format: html
+brand: true
 website:
   site-url: "https://smpdl.github.io/jsPsych-Dashboard/" 
   navbar:
     search: false
-    background: "#046b3b"
-    logo: "assets/jspsych-logo.svg"
     tools:
       - icon: github
         href: "https://github.com/jspsych/jsPsych" 
@@ -17,8 +16,8 @@ website:
       - text: "Home"
         href: index.qmd
       - text: "Pull Requests"
-        href: index.qmd
+        href: pull_req.qmd
       - text: "Issues"
-        href: index.qmd
+        href: issues.qmd
       - text: "Discussions"
-        href: index.qmd  
+        href: discussions.qmd  
