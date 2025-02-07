@@ -6,3 +6,19 @@ execute:
 format: html
 website:
   site-url: "https://smpdl.github.io/jsPsych-Dashboard/" 
+  navbar:
+    search: false
+    background: "#046b3b"
+    logo: "assets/jspsych-logo.svg"
+    tools:
+      - icon: github
+        href: "https://github.com/jspsych/jsPsych" 
+    left:
+      - text: "Home"
+        href: index.qmd
+      - text: "Pull Requests"
+        href: index.qmd
+      - text: "Issues"
+        href: index.qmd
+      - text: "Discussions"
+        href: index.qmd  
