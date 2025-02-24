@@ -1,5 +1,5 @@
 ---
-title: "matplotlib demo"
+title: "jsPsych Github Workflow"
 format:
   html:
     code-fold: true
