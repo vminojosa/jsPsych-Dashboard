@@ -8,6 +8,7 @@ brand: true
 website:
   site-url: "https://smpdl.github.io/jsPsych-Dashboard/" 
   navbar:
+    logo: medium
     search: false
     tools:
       - icon: github
