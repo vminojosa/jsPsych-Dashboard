@@ -1,5 +1,4 @@
 ---
-title: "Python Scripts"
 format:
   html:
     code-fold: true
