@@ -1,4 +1,6 @@
 ```{python}
+#| echo: false
+
 import requests
 import datetime
 import pandas as pd
