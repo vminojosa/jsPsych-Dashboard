@@ -1,5 +1,5 @@
 ---
-title: "Issue Reports"
+title: "Pulls Reports"
 format:
   html:
     code-fold: true
