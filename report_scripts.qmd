@@ -29,7 +29,7 @@ def fetch_api(endpoint):
   return final_data
 
 def create_ent_dataframe(ent_type):
-  is_pr = 'pulls=true' if ent_type == 'pulls' else 'pulls=false'
+  is_pr = 'true' if ent_type == 'pulls' else 'false'
   ret_data = fetch_api(f"issues?pulls={is_pr}&state=all&per_page=100")
   entries = []
   for item in ret_data:
