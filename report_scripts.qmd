@@ -1,0 +1,107 @@
+```{python}
+import requests
+import datetime
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+def fetch_api(endpoint):
+  url = f"https://api.github.com/repos/jspsych/jsPsych/{endpoint}"
+  final_data=[]
+  while url:
+   response = requests.get(url)
+   data = response.json()
+   for item in data:
+     final_data.append(item)
+   if 'next' in response.links:
+     url = response.links['next']['url']
+   else:
+     break
+  return final_data
+
+def create_comm_dataframe():
+    comm_data = fetch_api("issues/comments?per_page=100")
+    comments = []
+    for comment in comm_data:
+        comment_entry = {
+            'issue_number': int(comment['issue_url'].split('/')[-1]),
+            'user': comment['user']['login'],
+            'created_at': pd.to_datetime(comment['created_at']),
+            'body': comment['body']
+        }
+        comments.append(comment_entry)
+
+    return pd.DataFrame(comments)
+
+def analyze_interaction_times(df, comments_df):
+  if comments_df.empty:
+    print("Warning: Comments dataframe is empty")
+    df['comment_count'] = 0
+    df['avg_interaction_time'] = None
+    return df
+
+  comments_by_issue = comments_df.groupby('issue_number').agg({
+    'created_at': list,
+    'issue_number': 'count'
+  }).rename(columns={'issue_number': 'comment_count'})
+
+  df = df.merge(comments_by_issue, left_on='number', right_index=True, how='left')
+  df['comment_count'] = df['comment_count'].fillna(0)
+
+  if 'created_at_x' not in df.columns and 'created_at_y' not in df.columns:
+    df = df.rename(columns={'created_at': 'created_at_x'})
+    if 'created_at' in df.columns:
+      df['created_at_y'] = df['created_at']
+
+  def calculate_interaction_time(row):
+    if 'created_at_y' not in row or pd.isna(row['created_at_y']) or len(row['created_at_y']) == 0:
+      return None
+    dates = [row['created_at_x']] + row['created_at_y']
+    if row['closed_at'] is not None:
+      dates.append(row['closed_at'])
+    dates = [d for d in dates if pd.notna(d)]
+    dates = sorted(dates)
+
+    if len(dates) > 1:
+      time_diff = np.diff([d.timestamp() for d in dates])
+      return np.mean(time_diff) if len(time_diff) > 0 else None
+    return None
+
+  df['avg_interaction_time'] = df.apply(calculate_interaction_time, axis=1)
+
+  return df
+
+def quarterly_metrics(df):
+  return df.groupby(['year', 'quarter']).agg({
+  'number': 'count',
+  'avg_interaction_time': 'mean',
+  'comment_count': ['mean', 'sum']
+  }).round(2)
+
+def plot_quarterly_metrics(metrics, target_metric):
+  plt.figure(figsize=(10, 6))
+  for year in metrics.index.get_level_values('year').unique():
+    year_data = metrics.loc[year]
+    plt.plot(year_data.index, year_data[target_metric],
+            marker='o', label=f'Year {year}')
+
+  plt.xlabel('Quarter')
+  plt.ylabel(target_metric)
+  plt.title(f'Quarterly {target_metric} Over Time')
+  plt.legend()
+  plt.grid(True)
+  plt.show()
+
+def generate_report():
+  issues_df = create_ent_dataframe('issues')
+  pulls_df = create_ent_dataframe('pulls')
+  comments_df = create_comm_dataframe()
+
+  issues_analysis = analyze_interaction_times(issues_df, comments_df)
+  pulls_analysis = analyze_interaction_times(pulls_df, comments_df)
+
+  issues_quarterly = quarterly_metrics(issues_analysis)
+  pulls_quarterly = quarterly_metrics(pulls_analysis)
+
+  return issues_analysis, pulls_analysis, issues_quarterly, pulls_quarterly
+```
