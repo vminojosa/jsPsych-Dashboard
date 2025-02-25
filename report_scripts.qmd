@@ -32,10 +32,8 @@ def fetch_api(endpoint):
 def create_ent_dataframe(ent_type):
   is_pr = 'pulls=true' if ent_type == 'pulls' else 'pulls=false'
   ret_data = fetch_api(f"issues?pulls={is_pr}&state=all&per_page=100")
-  print(f"RET DATA TYPE: {type(ret_data)}")
   entries = []
   for item in ret_data:
-    print(f"ITEM TYPE: {type(item)}")
     entry = {
     'number': item['number'],
     'user': item['user']['login'],
