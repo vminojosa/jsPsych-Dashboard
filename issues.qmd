@@ -1,7 +1,7 @@
 Hello, this page will showcase the dashboard for issues 
 
-{{< include index.qmd >}}
+{{< include report_scripts.ipynb >}}
 
 ```{python}
-rmy_df = create_ent_dataframe('issues')
+my_df = create_ent_dataframe('issues')
 ```
