@@ -3,7 +3,6 @@ Hello, this page will showcase the dashboard for issues
 {{< include report_scripts.qmd >}}
 
 ```{python}
-#| include: false
 my_df = create_ent_dataframe('issues')
 my_df
 ```
