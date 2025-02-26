@@ -12,5 +12,5 @@ Hello, this page will showcase the dashboard for issues
 
 ```{python}
 my_df = create_ent_dataframe('issues')
-my[my_df["is_pr"].isin(["false"])]
+my_df[my_df["is_pr"].isin(["false"])]
 ```
