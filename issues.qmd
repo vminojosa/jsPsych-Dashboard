@@ -11,6 +11,7 @@ Hello, this page will showcase the dashboard for issues
 {{< include report_scripts.qmd >}}
 
 ```{python}
-my_df = select_ent('issues')
-my_df
+my_issues_analysis, my_prs_analysis, my_issues_quarterly, my_prs_quarterly = generate_report()
+my_issues_analysis
+my_issues_quarterly
 ```
