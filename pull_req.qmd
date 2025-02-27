@@ -12,5 +12,5 @@ Hello, this page will showcase the dashboard for pull requests!
 
 ```{python}
 my_df = create_ent_dataframe('issues')
-my_df["is_pr"].isin(["true"])
+my_df["is_pr"].isin([True])
 ```
