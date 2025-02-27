@@ -80,6 +80,7 @@ def analyze_interaction_times(df, comments_df):
     'created_at': list,
     'issue_number': 'count'
   }).rename(columns={'issue_number': 'comment_count'})
+  print(comments_by_issue)
 
   df = df.merge(comments_by_issue, left_on='number', right_index=True, how='left')
   df['comment_count'] = df['comment_count'].fillna(0)
