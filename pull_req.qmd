@@ -11,6 +11,6 @@ Hello, this page will showcase the dashboard for pull requests!
 {{< include report_scripts.qmd >}}
 
 ```{python}
-my_df = create_ent_dataframe('issues')
-my_df["is_pr"].isin([True])
+my_df = select_ent('pulls')
+my_df
 ```
