@@ -5,6 +5,8 @@ format:
 jupyter: python3
 ---
 
+Functions
+
 ```{python}
 #| echo: false
 
@@ -28,25 +30,18 @@ def fetch_api(endpoint):
      break
   return final_data
 
-def select_ent(ent_type):
-  df = create_dataframe()
-  if ent_type == 'pulls':
-    return df[df['ent_type'].isin(['pull'])]
-  else:
-    return df[df['ent_type'].isin(['issue'])]
-
 def create_dataframe():
-  ret_data = fetch_api(f"issues?state=all&per_page=100")
   entries = []
-  for item in ret_data:
+  for item in cache:
     entry = {
-    'number': item['number'],
+    'issue_number': item['number'],
     'user': item['user']['login'],
     'created_at': pd.to_datetime(item['created_at']),
     'closed_at': pd.to_datetime(item['closed_at']) if item['closed_at'] else None,
     'state': item['state'],
     'title': item['title'],
-    'ent_type': 'pull' if 'pull_request' in item else 'issue'
+    'ent_type': 'pull' if 'pull_request' in item else 'issue',
+    'pull_request': item['pull_request'] if 'pull_request' in item else None
     }
     entries.append(entry)
   df = pd.DataFrame(entries)
@@ -55,10 +50,16 @@ def create_dataframe():
 
   return df
 
+def select_ent(ent_type):
+  df = create_dataframe()
+  if ent_type == 'pulls':
+    return df[df['ent_type'].isin(['pull'])]
+  else:
+    return df[df['ent_type'].isin(['issue'])].drop('pull_request', axis=1)
+
 def create_comm_dataframe():
-    comm_data = fetch_api("issues/comments?per_page=100")
     comments = []
-    for comment in comm_data:
+    for comment in comm_cache:
         comment_entry = {
             'issue_number': int(comment['issue_url'].split('/')[-1]),
             'user': comment['user']['login'],
@@ -80,9 +81,8 @@ def analyze_interaction_times(df, comments_df):
     'created_at': list,
     'issue_number': 'count'
   }).rename(columns={'issue_number': 'comment_count'})
-  print(comments_by_issue)
 
-  df = df.merge(comments_by_issue, left_on='number', right_index=True, how='left')
+  df = df.merge(comments_by_issue, left_on='issue_number', right_index=True, how='left')
   df['comment_count'] = df['comment_count'].fillna(0)
 
   if 'created_at_x' not in df.columns and 'created_at_y' not in df.columns:
@@ -91,26 +91,43 @@ def analyze_interaction_times(df, comments_df):
       df['created_at_y'] = df['created_at']
 
   def calculate_interaction_time(row):
-    if 'created_at_y' not in row or pd.isna(row['created_at_y']) or len(row['created_at_y']) == 0:
+    if pd.isna(row)['created_at_y']:
       return None
     dates = [row['created_at_x']] + row['created_at_y']
     if row['closed_at'] is not None:
       dates.append(row['closed_at'])
-    dates = [d for d in dates if pd.notna(d)]
+    dates = [d for d in dates if pd.notna(d)] # --> is this step necessary?
     dates = sorted(dates)
-
     if len(dates) > 1:
       time_diff = np.diff([d.timestamp() for d in dates])
+      time_diff = time_diff / (60 * 60 * 24) # convert to days
       return np.mean(time_diff) if len(time_diff) > 0 else None
     return None
-
+  
+  def calculate_merge_time(row):
+    if pd.isna(row['pull_request']['merged_at']):
+      return None
+    created_at = row['created_at_x'].timestamp()
+    pr = row['pull_request']
+    merged_at = pd.to_datetime(pr['merged_at']).timestamp()
+    return (merged_at - created_at) / (60 * 60 * 24) # convert to days
+  
   df['avg_interaction_time'] = df.apply(calculate_interaction_time, axis=1)
+  if 'pull_request' in df.columns:
+    df['merge_time'] = df.apply(calculate_merge_time, axis=1)
 
   return df
 
 def quarterly_metrics(df):
+  if 'merge_time' in df.columns:
+    return df.groupby(['year', 'quarter']).agg({
+      'issue_number': 'count',
+      'avg_interaction_time': 'mean',
+      'comment_count': ['mean', 'sum'],
+      'merge_time': 'mean'
+    }).round(2)
   return df.groupby(['year', 'quarter']).agg({
-  'number': 'count',
+  'issue_number': 'count',
   'avg_interaction_time': 'mean',
   'comment_count': ['mean', 'sum']
   }).round(2)
