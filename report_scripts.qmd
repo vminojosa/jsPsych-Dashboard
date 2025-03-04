@@ -8,7 +8,7 @@ jupyter: python3
 Functions
 
 ```{python}
-#| echo: false
+#| include: false
 
 import requests
 import datetime
@@ -158,4 +158,15 @@ def generate_report():
   pulls_quarterly = quarterly_metrics(pulls_analysis)
 
   return issues_analysis, pulls_analysis, issues_quarterly, pulls_quarterly
+
+my_issues_analysis, my_prs_analysis, my_issues_quarterly, my_prs_quarterly = generate_report()
+```
+
+Declaring Variables for Report Pages
+
+```{python}
+#| echo: false
+
+my_issues_quarterly
+my_prs_quarterly
 ```
