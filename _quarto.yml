@@ -6,7 +6,7 @@ execute:
 format: html
 brand: true
 website:
-  site-url: "https://smpdl.github.io/jsPsych-Dashboard/" 
+  site-url: "https://vminojosa.github.io/jsPsych-Dashboard/" 
   navbar:
     logo: medium
     search: false
