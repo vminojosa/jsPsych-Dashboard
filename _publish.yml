@@ -1,7 +1,0 @@
-project:
-  type: website
-  deploy:
-    - id: "github-pages"
-      provider: "gh-pages"
-      branch: "gh-pages"
-      dir: "docs"
