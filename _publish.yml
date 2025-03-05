@@ -1,0 +1,5 @@
+project:
+  deploy:
+    - id: "github-pages"
+      provider: "github-pages"
+      branch: "gh-pages"
