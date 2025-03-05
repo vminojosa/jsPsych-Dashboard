@@ -1,5 +1,6 @@
 project:
   deploy:
     - id: "github-pages"
-      provider: "github-pages"
+      provider: "gh-pages"
       branch: "gh-pages"
+      dir: "docs"
