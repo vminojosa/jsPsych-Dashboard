@@ -1,0 +1,12 @@
+{
+  "hash": "b3d9426c0ba76b82eb02e2d8653dffd6",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"jsPsych Github Workflow\"\nformat:\n  html:\n    code-fold: true\njupyter: python3\n---\n\n\n\n\nHello, this page will showcase the main dashboard!\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}
