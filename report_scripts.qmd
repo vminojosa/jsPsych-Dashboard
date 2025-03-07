@@ -5,7 +5,7 @@ format:
 jupyter: python3
 ---
 
-Functions
+FUNCTIONS: DATAFRAMES
 
 ```{python}
 #| include: false
@@ -132,6 +132,23 @@ def quarterly_metrics(df):
   'comment_count': ['mean', 'sum']
   }).round(2)
 
+def generate_report():
+  issues_df = select_ent('issues')
+  pulls_df = select_ent('pulls')
+  comments_df = create_comm_dataframe()
+
+  issues_analysis = analyze_interaction_times(issues_df, comments_df)
+  pulls_analysis = analyze_interaction_times(pulls_df, comments_df)
+
+  issues_quarterly = quarterly_metrics(issues_analysis)
+  pulls_quarterly = quarterly_metrics(pulls_analysis)
+
+  return issues_analysis, pulls_analysis, issues_quarterly, pulls_quarterly
+```
+
+FUNCTIONS: PLOTS
+```{python}
+
 def plot_quarterly_metrics(metrics, target_metric):
   plt.figure(figsize=(10, 6))
   for year in metrics.index.get_level_values('year').unique():
@@ -146,35 +163,46 @@ def plot_quarterly_metrics(metrics, target_metric):
   plt.grid(True)
   plt.show()
 
-def generate_report():
-  issues_df = select_ent('issues')
-  pulls_df = select_ent('pulls')
-  comments_df = create_comm_dataframe()
-
-  issues_analysis = analyze_interaction_times(issues_df, comments_df)
-  pulls_analysis = analyze_interaction_times(pulls_df, comments_df)
-
-  issues_quarterly = quarterly_metrics(issues_analysis)
-  pulls_quarterly = quarterly_metrics(pulls_analysis)
-
-  return issues_analysis, pulls_analysis, issues_quarterly, pulls_quarterly
+def plot_performance_comparison(metrics, target_metric):
+  plt.figure(figsize=(10, 6))
+  x = ['Current Quarter','This Quarter Last Year','Previous Quarter']
+  year = metrics.index.get_level_values('year')[-1]
+  quarter = metrics.index.get_level_values('quarter')[-1]
+  if quarter == 1:
+    prev_quarter = metrics.loc[year-1].loc[4][target_metric]
+  else:
+    prev_quarter = metrics.loc[year].loc[quarter-1][target_metric]
+  y = [
+    metrics.loc[year].loc[quarter][target_metric], 
+    metrics.loc[year-1].loc[quarter][target_metric],
+    prev_quarter
+  ]
+  plt.bar(x, y)
+  plt.ylabel(target_metric)
+  plt.title(f'Performance Comparison for {target_metric}')
+  plt.show()
 ```
+
+CACHES
 ```{python}
 #| include: false
 
 cache = fetch_api(f"issues?state=all&per_page=100")
 comm_cache = fetch_api(f"issues/comments?per_page=100")
+```
+
+DATAFRAMES
+```{python}
+#| include: false
+
 iss_df  = select_ent('issues')
 pull_df = select_ent('pulls')
 comm_df = create_comm_dataframe()
 my_issues_analysis, my_prs_analysis, my_issues_quarterly, my_prs_quarterly = generate_report()
 ```
 
-Declaring Variables for Report Pages
-
+REPORT PAGES
 ```{python}
-#| echo: false
-
-my_issues_quarterly
-my_prs_quarterly
+issue_data = my_issues_quarterly
+pull_data = my_prs_quarterly
 ```

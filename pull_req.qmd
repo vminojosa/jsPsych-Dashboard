@@ -11,5 +11,5 @@ Hello, this page will showcase the dashboard for pull requests!
 {{< include report_scripts.qmd >}}
 
 ```{python}
-my_prs_quarterly
+plot_performance_comparison(pull_data, ('merge_time', 'mean'))
 ```

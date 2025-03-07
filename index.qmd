@@ -4,6 +4,11 @@ format:
   html:
     code-fold: true
 jupyter: python3
+date: last-modified
+resources:
+  - .nojekyll
+---
+Setting up CI for quarto website build & publish.
 ---
 
 Hello, this page will showcase the main dashboard!

@@ -9,7 +9,3 @@ jupyter: python3
 Hello, this page will showcase the dashboard for issues 
 
 {{< include report_scripts.qmd >}}
-
-```{python}
-my_issues_quarterly
-```

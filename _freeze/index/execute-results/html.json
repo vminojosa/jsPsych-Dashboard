@@ -1,10 +1,10 @@
 {
-  "hash": "b3d9426c0ba76b82eb02e2d8653dffd6",
+  "hash": "23cafec55e68e1cb5d9897745ebcb56e",
   "result": {
     "engine": "jupyter",
-    "markdown": "---\ntitle: \"jsPsych Github Workflow\"\nformat:\n  html:\n    code-fold: true\njupyter: python3\n---\n\n\n\n\nHello, this page will showcase the main dashboard!\n\n",
+    "markdown": "---\ntitle: \"jsPsych Github Workflow\"\nformat:\n  html:\n    code-fold: true\njupyter: python3\ndate: last-modified\nresources:\n  - .nojekyll\n---\n\n\n\nSetting up CI for quarto website build & publish.\n\n---\n\nHello, this page will showcase the main dashboard!\n\n",
     "supporting": [
-      "index_files"
+      "index_files/figure-html"
     ],
     "filters": [],
     "includes": {}
