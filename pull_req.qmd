@@ -9,7 +9,3 @@ jupyter: python3
 Hello, this page will showcase the dashboard for pull requests!
 
 {{< include report_scripts.qmd >}}
-
-```{python}
-plot_performance_comparison(pull_data, ('merge_time', 'mean'))
-```
