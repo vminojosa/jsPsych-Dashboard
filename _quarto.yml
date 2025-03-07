@@ -1,6 +1,6 @@
 project:
   type: website
-  output-dir: docs
+  output-dir: docs #edit this to include render targets
 execute:
   freeze: auto
   python: true
