@@ -9,6 +9,12 @@ jobs:
       permissions:
         contents: write
       steps:
+        - name: Authenticating requests
+          with:
+            super_secret: ${{ secret.API_AUTH }}
+          env:
+            super_secret: ${{ secret.API_AUTH }}
+      
         - name: Check out repository
           uses: actions/checkout@v3
           
