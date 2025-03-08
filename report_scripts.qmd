@@ -10,7 +10,7 @@ import os
 
 def fetch_api(endpoint):
   url = f"https://api.github.com/repos/jspsych/jsPsych/{endpoint}"
-  token = os.environ['GITHUB_TOKEN']
+  token = os.environ['AUTH_API']
   headers = {'Authorization': 'token' + token}
   final_data=[]
   while url:
