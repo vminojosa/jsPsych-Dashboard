@@ -1,5 +1,6 @@
 ```{python}
 #| include: false
+#| echo: false
 
 import requests
 import datetime
