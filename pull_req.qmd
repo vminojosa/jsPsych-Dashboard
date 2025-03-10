@@ -7,3 +7,5 @@ jupyter: python3
 ---
 
 Hello, this page will showcase the dashboard for pull requests!
+
+{{ include report_scripts.qmd }}
