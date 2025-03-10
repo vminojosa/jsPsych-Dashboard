@@ -11,7 +11,7 @@
     "href": "pull_req.html",
     "title": "Pulls Reports",
     "section": "",
-    "text": "format: html: code-fold: true jupyter: python3\n\nFUNCTIONS: DATAFRAMES\nFUNCTIONS: PLOTS\n\n\nCode\ndef plot_quarterly_metrics(metrics, target_metric):\n  plt.figure(figsize=(10, 6))\n  for year in metrics.index.get_level_values('year').unique():\n    year_data = metrics.loc[year]\n    plt.plot(year_data.index, year_data[target_metric],\n            marker='o', label=f'Year {year}')\n\n  plt.xlabel('Quarter')\n  plt.ylabel(target_metric)\n  plt.title(f'Quarterly {target_metric} Over Time')\n  plt.legend()\n  plt.grid(True)\n  plt.show()\n\ndef plot_performance_comparison(metrics, target_metric):\n  plt.figure(figsize=(10, 6))\n  x = ['Current Quarter','This Quarter Last Year','Previous Quarter']\n  year = metrics.index.get_level_values('year')[-1]\n  quarter = metrics.index.get_level_values('quarter')[-1]\n  if quarter == 1:\n    prev_quarter = metrics.loc[year-1].loc[4][target_metric]\n  else:\n    prev_quarter = metrics.loc[year].loc[quarter-1][target_metric]\n  y = [\n    metrics.loc[year].loc[quarter][target_metric], \n    metrics.loc[year-1].loc[quarter][target_metric],\n    prev_quarter\n  ]\n  plt.bar(x, y)\n  plt.ylabel(target_metric)\n  plt.title(f'Performance Comparison for {target_metric}')\n  plt.show()\n\n\nCACHES\nDATAFRAMES\nREPORT PAGES\n\n\nCode\nissue_data = my_issues_quarterly\npull_data = my_prs_quarterly\n\n\n\n\nCode\nplot_performance_comparison(pull_data, ('merge_time', 'mean'))"
+    "text": "Hello, this page will showcase the dashboard for pull requests!"
   },
   {
     "objectID": "report_scripts.html",
@@ -25,7 +25,7 @@
     "href": "issues.html",
     "title": "Issue Reports",
     "section": "",
-    "text": "format: html: code-fold: true jupyter: python3\n\nFUNCTIONS: DATAFRAMES\nFUNCTIONS: PLOTS\n\n\nCode\ndef plot_quarterly_metrics(metrics, target_metric):\n  plt.figure(figsize=(10, 6))\n  for year in metrics.index.get_level_values('year').unique():\n    year_data = metrics.loc[year]\n    plt.plot(year_data.index, year_data[target_metric],\n            marker='o', label=f'Year {year}')\n\n  plt.xlabel('Quarter')\n  plt.ylabel(target_metric)\n  plt.title(f'Quarterly {target_metric} Over Time')\n  plt.legend()\n  plt.grid(True)\n  plt.show()\n\ndef plot_performance_comparison(metrics, target_metric):\n  plt.figure(figsize=(10, 6))\n  x = ['Current Quarter','This Quarter Last Year','Previous Quarter']\n  year = metrics.index.get_level_values('year')[-1]\n  quarter = metrics.index.get_level_values('quarter')[-1]\n  if quarter == 1:\n    prev_quarter = metrics.loc[year-1].loc[4][target_metric]\n  else:\n    prev_quarter = metrics.loc[year].loc[quarter-1][target_metric]\n  y = [\n    metrics.loc[year].loc[quarter][target_metric], \n    metrics.loc[year-1].loc[quarter][target_metric],\n    prev_quarter\n  ]\n  plt.bar(x, y)\n  plt.ylabel(target_metric)\n  plt.title(f'Performance Comparison for {target_metric}')\n  plt.show()\n\n\nCACHES\nDATAFRAMES\nREPORT PAGES\n\n\nCode\nissue_data = my_issues_quarterly\npull_data = my_prs_quarterly"
+    "text": "Hello, this page will showcase the dashboard for issues"
   },
   {
     "objectID": "discussions.html",
