@@ -38,5 +38,5 @@ jobs:
           with:
             target: gh-pages # renderred html files will be pushed here
           env:
-            AUTH_API: ${{ secrets.API_AUTH }}
+            API_AUTH: ${{ secrets.API_AUTH }}
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # this secret is always available for github actions
