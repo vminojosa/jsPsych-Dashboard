@@ -127,6 +127,7 @@ def quarterly_metrics(df):
 def generate_report():
   issues_df = select_ent('issues')
   pulls_df = select_ent('pulls')
+  print(issues_df)
   comments_df = create_comm_dataframe()
 
   issues_analysis = analyze_interaction_times(issues_df, comments_df)
@@ -172,6 +173,8 @@ def plot_performance_comparison(metrics, target_metric):
 
 cache = fetch_api(f"issues?state=all&per_page=100")
 comm_cache = fetch_api(f"issues/comments?per_page=100")
+
+print(comm_cache)
 
 my_issues_analysis, my_prs_analysis, my_issues_quarterly, my_prs_quarterly = generate_report()
 ```
