@@ -14,7 +14,7 @@ def fetch_api(endpoint):
   headers = {'Authorization': f'token {token}'}
   final_data=[]
   while url:
-   response = requests.get(url, headers=headers)
+   response = requests.get(url)
    data = response.json()
    for item in data:
      final_data.append(item)
