@@ -173,9 +173,6 @@ def plot_performance_comparison(metrics, target_metric):
 cache = fetch_api(f"issues?state=all&per_page=100")
 comm_cache = fetch_api(f"issues/comments?per_page=100")
 
-iss_df  = select_ent('issues')
-pull_df = select_ent('pulls')
-comm_df = create_comm_dataframe()
 my_issues_analysis, my_prs_analysis, my_issues_quarterly, my_prs_quarterly = generate_report()
 ```
 
