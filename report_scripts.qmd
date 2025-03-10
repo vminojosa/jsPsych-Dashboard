@@ -10,9 +10,11 @@ import os
 
 def fetch_api(endpoint):
   url = f"https://api.github.com/repos/jspsych/jsPsych/{endpoint}"
+  token = os.getenv('AUTH_API')
+  headers = {'Authorization': f'token {token}'}
   final_data=[]
   while url:
-   response = requests.get(url)
+   response = requests.get(url, headers=headers)
    data = response.json()
    for item in data:
      final_data.append(item)
@@ -176,7 +178,6 @@ comm_cache = fetch_api(f"issues/comments?per_page=100")
 my_issues_analysis, my_prs_analysis, my_issues_quarterly, my_prs_quarterly = generate_report()
 ```
 
-REPORT PAGES
 ```{python}
 issue_data = my_issues_quarterly
 pull_data = my_prs_quarterly
