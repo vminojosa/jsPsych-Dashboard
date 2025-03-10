@@ -1,5 +1,4 @@
 ```{python}
-#| include: false
 #| echo: false
 
 import requests
