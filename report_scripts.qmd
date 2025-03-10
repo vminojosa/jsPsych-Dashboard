@@ -11,6 +11,7 @@ import os
 def fetch_api(endpoint):
   url = f"https://api.github.com/repos/jspsych/jsPsych/{endpoint}"
   token = os.environ['AUTH_API']
+  print(f'your token is {token}')
   headers = {'Authorization': f'token {token}'}
   final_data=[]
   while url:
@@ -174,6 +175,7 @@ def plot_performance_comparison(metrics, target_metric):
 
 cache = fetch_api(f"issues?state=all&per_page=100")
 comm_cache = fetch_api(f"issues/comments?per_page=100")
+print(len(cache), len(comm_cache))
 
 my_issues_analysis, my_prs_analysis, my_issues_quarterly, my_prs_quarterly = generate_report()
 ```
