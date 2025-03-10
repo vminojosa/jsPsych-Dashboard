@@ -163,23 +163,53 @@ def plot_quarterly_metrics(metrics, target_metric):
   plt.show()
 
 def plot_performance_comparison(metrics, target_metric):
-  plt.figure(figsize=(10, 6))
-  x = ['Current Quarter','This Quarter Last Year','Previous Quarter']
-  year = metrics.index.get_level_values('year')[-1]
-  quarter = metrics.index.get_level_values('quarter')[-1]
-  if quarter == 1:
-    prev_quarter = metrics.loc[year-1].loc[4][target_metric]
-  else:
-    prev_quarter = metrics.loc[year].loc[quarter-1][target_metric]
-  y = [
+    plt.figure(figsize=(10, 6))
+
+    year = metrics.index.get_level_values('year')[-1]
+    quarter = metrics.index.get_level_values('quarter')[-1]
+    if quarter == 1:
+            prev_quarter = metrics.loc[year-1].loc[4][target_metric]
+    else:
+            prev_quarter = metrics.loc[year].loc[quarter-1][target_metric]
+
+    x = ['Current Quarter','This Quarter Last Year','Previous Quarter']
+    y = [
     metrics.loc[year].loc[quarter][target_metric], 
     metrics.loc[year-1].loc[quarter][target_metric],
     prev_quarter
-  ]
-  plt.bar(x, y)
-  plt.ylabel(target_metric)
-  plt.title(f'Performance Comparison for {target_metric}')
-  plt.show()
+    ]
+    plt.bar(x, y)
+    plt.ylabel(target_metric)
+    plt.title(f'Performance Comparison for {target_metric}')
+    plt.show()
+
+def calculate_d_times(metrics):
+    if ('merge_time', 'mean') in metrics.columns:
+        df = my_prs_analysis
+    else:
+        df = my_issues_analysis
+    frame = pd.isna(df.loc[df['year'] == 2025].loc[df['quarter'] == 1])
+    indices = frame.loc[frame['merge_time'] == True].loc[frame['closed_at'] == True].index
+    now = datetime.datetime.now().timestamp()
+    d_times = [now-d.timestamp() for d in df.loc[indices]['created_at_x']]
+    return d_times
+
+def calculate_d_metrics(metrics, target_metric):
+    count = metrics.loc[2025].loc[1][target_metric]
+    target_time = metrics.loc[2025].loc[1][target_metric]
+    time0 = (count * target_time)
+    time1 = time0
+    for t in calculate_d_times(metrics):
+        t = t / (60 * 60 * 24)
+        time1 = time1 + t
+    d_metric = time1 - time0
+    return d_metric
+
+def build_dashboard(metrics, target_metric):
+      plot = plot_performance_comparison(metrics, target_metric)
+      delta = calculate_d_metrics(metrics, target_metric)
+      return plot, delta
+        
 
 cache = fetch_api(f"issues?state=all&per_page=100")
 comm_cache = fetch_api(f"issues/comments?per_page=100")
@@ -188,6 +218,5 @@ my_issues_analysis, my_prs_analysis, my_issues_quarterly, my_prs_quarterly = gen
 ```
 
 ```{python}
-issue_data = my_issues_quarterly
-pull_data = my_prs_quarterly
+build_dashboard(my_prs_quarterly, ('merge_time', 'mean'))
 ```
