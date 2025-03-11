@@ -1,6 +1,7 @@
 ```{python}
 #| echo: false
 
+# importing requirements
 import requests
 import datetime
 import pandas as pd
@@ -8,6 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+# API Interactions
 def fetch_api(endpoint):
   url = f"https://api.github.com/repos/jspsych/jsPsych/{endpoint}"
   token = os.environ['API_AUTH']
@@ -44,6 +46,7 @@ def create_dataframe():
 
   return df
 
+# Dataframe Building
 def select_ent(ent_type):
   df = create_dataframe()
   if ent_type == 'pulls':
@@ -139,6 +142,7 @@ def generate_report():
 
   return issues_analysis, pulls_analysis, issues_quarterly, pulls_quarterly
 
+# Visuals and Front-End Reports
 def plot_quarterly_metrics(metrics, target_metric):
   plt.figure(figsize=(10, 6))
   for year in metrics.index.get_level_values('year').unique():
@@ -172,6 +176,7 @@ def plot_performance_comparison(metrics, target_metric):
   plt.title(f'Performance Comparison for {target_metric}')
   plt.show()
 
+# Declaring Variables
 cache = fetch_api(f"issues?state=all&per_page=100")
 comm_cache = fetch_api(f"issues/comments?per_page=100")
 
