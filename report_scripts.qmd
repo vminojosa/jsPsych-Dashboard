@@ -157,24 +157,82 @@ def plot_quarterly_metrics(metrics, target_metric):
   plt.grid(True)
   plt.show()
 
+def calculate_d_times(metrics):
+    if ('merge_time', 'mean') in metrics.columns:
+        df = my_prs_analysis
+    else:
+        df = my_issues_analysis
+
+    open_df = df.loc[df['year'] == 2025].loc[df['quarter'] == 1].loc[df['state'] == 'open']
+    open_df = open_df.drop(columns = [
+        'user', 
+        'closed_at', 
+        'state', 
+        'title', 
+        'ent_type',
+        'year', 
+        'quarter', 
+        'comment_count', 
+        'merge_time'])
+
+    now = datetime.datetime.now().timestamp()
+    d_times = [(now-date.timestamp())/(60*60*24) for date in open_df['created_at_x']]
+    times_df = open_df.assign(d_time = d_times)
+    return times_df
+
+def calculate_d_metrics(metrics, target_metric):
+    count = metrics.loc[2025].loc[1][('issue_number', 'count')]
+    target = metrics.loc[2025].loc[1][target_metric]
+    print(f'the current time is {target} days to merge')
+    times_df = calculate_d_times(metrics)
+    print(f'there are {len(times_df)} open pull requests')
+    d_means = []
+    for t in times_df['d_time']:
+        print(f'as of now, this pr would have taken {t} days to merge')
+        print(f'the mean would change by {(t - target) / (count + 1)} days')
+        d_means.append((t-target) / (count + 1))
+    times_df = times_df.assign(d_mean = d_means)
+    times_df = times_df.sort_values('d_mean')
+    url = times_df.iloc[-1]['pull_request']['html_url']
+    d_metric = sum(d_means) / len(d_means)
+    return [d_metric, url]
+
 def plot_performance_comparison(metrics, target_metric):
-  plt.figure(figsize=(10, 6))
-  x = ['Current Quarter','This Quarter Last Year','Previous Quarter']
-  year = metrics.index.get_level_values('year')[-1]
-  quarter = metrics.index.get_level_values('quarter')[-1]
-  if quarter == 1:
-    prev_quarter = metrics.loc[year-1].loc[4][target_metric]
-  else:
-    prev_quarter = metrics.loc[year].loc[quarter-1][target_metric]
-  y = [
-    metrics.loc[year].loc[quarter][target_metric], 
-    metrics.loc[year-1].loc[quarter][target_metric],
-    prev_quarter
-  ]
-  plt.bar(x, y)
-  plt.ylabel(target_metric)
-  plt.title(f'Performance Comparison for {target_metric}')
-  plt.show()
+    plt.figure(figsize=(4, 6))
+
+    year = metrics.index.get_level_values('year')[-1]
+
+    quarter = metrics.index.get_level_values('quarter')[-1]
+    prev_year = metrics.loc[year-1].loc[quarter][target_metric]
+    if quarter == 1:
+        prev_quarter = metrics.loc[year-1].loc[4][target_metric]
+    else:
+        prev_quarter = metrics.loc[year].loc[quarter-1][target_metric]
+
+    x = 'Current Quarter'
+    y = metrics.loc[year].loc[quarter][target_metric]
+
+    delta_array = calculate_d_metrics(metrics, target_metric)
+    delta = delta_array[0]
+    url = delta_array[1]
+    print(f'the pr that would impact mean merge time the most is: {url}')
+
+    rank = sorted([prev_year, prev_quarter, y, y+delta])
+    if (y+delta) == rank[0]:
+        d_color = 'green'
+    if (y+delta) == rank[-1]:
+        d_color = 'red'
+    else:
+        d_color = 'yellow'
+
+    plt.bar(x, y)
+    plt.axhline(y=prev_year, color="black", linestyle=":", label='This Quarter Last Year')
+    plt.axhline(y=prev_quarter, color="black", linestyle="--", label='Previous Quarter')
+    plt.axhline(y=y+delta, color=f"{d_color}", linestyle="-", label='Merging All Open PRs in Quarter')
+    plt.legend()
+    plt.ylabel(target_metric)
+    plt.title(f'Performance Comparison for {target_metric}')
+    plt.show()
 
 # Declaring Variables
 cache = fetch_api(f"issues?state=all&per_page=100")
