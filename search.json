@@ -11,7 +11,7 @@
     "href": "pull_req.html",
     "title": "Pulls Reports",
     "section": "",
-    "text": "Hello, this page will showcase the dashboard for pull requests!\n\n\nCode\nbuild_dashboard(my_prs_quarterly, ('merge_time', 'mean'))\n\n\n\n\n\n(None, np.float64(80.06420946671454))"
+    "text": "Hello, this page will showcase the dashboard for pull requests!\n\n\nCode\nissue_data = my_issues_quarterly\npull_data = my_prs_quarterly\n\n\n\n\nCode\nplot_performance_comparison(my_prs_quarterly, ('merge_time', 'mean'))\n\n\nthe current time is 6.05 days to merge\nthere are 2 open pull requests\nas of now, this pr would have taken 10.140132990198003 days to merge\nthe mean would change by 0.22722961056655575 days\nas of now, this pr would have taken 69.9390218790869 days to merge\nthe mean would change by 3.5493901043937166 days\nthe pr that would impact mean merge time the most is: https://github.com/jspsych/jsPsych/pull/3480"
   },
   {
     "objectID": "report_scripts.html",

@@ -166,13 +166,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell" data-execution_count="2">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>build_dashboard(my_prs_quarterly, (<span class="st">'merge_time'</span>, <span class="st">'mean'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>issue_data <span class="op">=</span> my_issues_quarterly</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>pull_data <span class="op">=</span> my_prs_quarterly</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-display">
-<p><img src="pull_req_files/figure-html/cell-3-output-1.png" width="808" height="505"></p>
 </div>
-<div class="cell-output cell-output-display" data-execution_count="2">
-<pre><code>(None, np.float64(80.06420946671454))</code></pre>
+<div class="cell" data-execution_count="3">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>plot_performance_comparison(my_prs_quarterly, (<span class="st">'merge_time'</span>, <span class="st">'mean'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>the current time is 6.05 days to merge
+there are 2 open pull requests
+as of now, this pr would have taken 10.140132990198003 days to merge
+the mean would change by 0.22722961056655575 days
+as of now, this pr would have taken 69.9390218790869 days to merge
+the mean would change by 3.5493901043937166 days
+the pr that would impact mean merge time the most is: https://github.com/jspsych/jsPsych/pull/3480</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="pull_req_files/figure-html/cell-4-output-2.png" width="435" height="505"></p>
 </div>
 </div>
 
