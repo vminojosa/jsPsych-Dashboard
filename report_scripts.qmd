@@ -249,8 +249,3 @@ comm_cache = fetch_api(f"issues/comments?per_page=100")
 
 my_issues_analysis, my_prs_analysis, my_issues_quarterly, my_prs_quarterly = generate_report()
 ```
-
-```{python}
-issue_data = my_issues_quarterly
-pull_data = my_prs_quarterly
-```
