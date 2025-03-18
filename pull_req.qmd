@@ -11,9 +11,7 @@ Hello, this page will showcase the dashboard for pull requests!
 
 ```{python}
 #| echo: false
-my_prs_analysis
-
-open_awhile(my_prs_analysis)
+print(open_awhile(my_prs_analysis))
 
 plot_history(my_prs_quarterly, ('issue_number', 'count'))
 plot_history(my_prs_quarterly, ('merge_time', 'mean'))
