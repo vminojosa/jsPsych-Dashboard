@@ -1,12 +1,16 @@
 ```{python}
 #| echo: false
 
+# MODULES
+
 import requests
 import datetime
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+
+# API REQUEST
 
 def fetch_api(endpoint):
   url = f"https://api.github.com/repos/jspsych/jsPsych/{endpoint}"
@@ -23,6 +27,8 @@ def fetch_api(endpoint):
    else:
      break
   return final_data
+
+# BUILD BASE DATAFRAMES
 
 def create_dataframe():
   entries = []
@@ -138,6 +144,16 @@ def generate_report():
   pulls_quarterly = quarterly_metrics(pulls_analysis)
 
   return issues_analysis, pulls_analysis, issues_quarterly, pulls_quarterly
+
+# SORTED FRAMES
+
+def open_awhile(frame):
+  df = frame.loc[frame['state'] == 'open']
+  df = df.loc[df['year'] < 2024]
+  print(f"There are {len(df)} issues which are left open since before 2024")
+  return df
+
+# VISUALS
 
 def plot_quarterly_metrics(metrics, target_metric):
   plt.figure(figsize=(10, 6))
