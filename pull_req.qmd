@@ -15,6 +15,4 @@ open_awhile(my_prs_analysis)
 
 plot_history(my_prs_quarterly, ('issue_number', 'count'))
 plot_history(my_prs_quarterly, ('merge_time', 'mean'))
-
-plot_performance_comparison(my_prs_quarterly, ('merge_time', 'mean'))
 ```
