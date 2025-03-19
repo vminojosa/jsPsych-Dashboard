@@ -11,8 +11,7 @@ Hello, this page will showcase the dashboard for pull requests!
 
 ```{python}
 #| echo: false
-my_prs_analysis
-my_prs_quarterly
+open_awhile(my_prs_analysis)
 ```
 ```{python}
 #| echo: false
