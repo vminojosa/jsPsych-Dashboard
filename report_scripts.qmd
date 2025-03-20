@@ -119,17 +119,21 @@ def analyze_interaction_times(df, comments_df):
   return df
 
 def quarterly_metrics(df):
-  if 'merge_time' in df.columns:
-    return df.groupby(['year', 'quarter']).agg({
+  if 'merge_time' in df.columns: #---> there has to be a cleaner way to write this with the .agg function; maybe an array for column names?
+    df = df.groupby(['year', 'quarter']).agg({
       'issue_number': 'count',
       'avg_interaction_time': 'mean',
       'comment_count': ['mean', 'sum'],
-      'merge_time': 'mean'
+      'closed_at': 'count',
+      'merge_time': ['mean', 'count']
     }).round(2)
+    df['merge2closed'] = df[('merge_time','count')] - df[('closed_at','count')]
+    return df
   return df.groupby(['year', 'quarter']).agg({
   'issue_number': 'count',
   'avg_interaction_time': 'mean',
-  'comment_count': ['mean', 'sum']
+  'comment_count': ['mean', 'sum'],
+  'closed_at': 'count',
   }).round(2)
 
 def generate_report():
