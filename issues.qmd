@@ -8,3 +8,8 @@ jupyter: python3
 
 Hello, this page will showcase the dashboard for issues 
 
+{{< report_scripts.qmd >}}
+
+```{python}
+plot_history(my_issues_quarterly, ('avg_interaction_time', 'mean'))
+```
